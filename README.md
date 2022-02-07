@@ -10,7 +10,11 @@ This PokeApp will be like a Pokedex with the abilities to search up any Pokemon,
 
 API:
 https://pokeapi.co/
-This API is a databse of all available pokemon. It also contains in depth information including appearances, stats, and learnable moves.
+This API is a database of all available pokemon. It also contains in depth information including appearances, stats, and learnable moves.
+
+Inspiration:
+The team leader has a dream to one day create an Pokemon MMOPRG game.
+When we saw the lecture and he used the Pokedex API as an example.
 
 RESOURCE LINKS:
 https://codinginflow.com/tutorials/android/room-viewmodel-livedata-recyclerview-mvvm/part-1-introduction
