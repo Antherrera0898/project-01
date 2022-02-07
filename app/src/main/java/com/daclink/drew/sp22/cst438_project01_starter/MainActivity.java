@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
+    static final String api = "https://pokeapi.co/api/v2";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
