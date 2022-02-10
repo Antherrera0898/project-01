@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CST438_Project01_Starter">
         <activity
-            android:name=".MainActivity"
+            android:name=".RegisterActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.CST438_Project01_Starter.NoActionBar">
