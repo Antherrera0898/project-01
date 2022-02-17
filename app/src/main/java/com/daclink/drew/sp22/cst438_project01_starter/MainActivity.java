@@ -17,6 +17,8 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.daclink.drew.sp22.cst438_project01_starter.databinding.ActivityMainBinding;
 
@@ -44,10 +46,20 @@ public class MainActivity extends AppCompatActivity {
 
     private Retrofit retrofit;
 
+    private RecyclerView recyclerView;
+    private PokemonAdapter pokemonAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        pokemonAdapter = new PokemonAdapter();
+        recyclerView.setAdapter(pokemonAdapter);
+        recyclerView.setHasFixedSize(true);
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 3);
+        recyclerView.setLayoutManager(layoutManager);
 
         retrofit = new Retrofit.Builder()
                 .baseUrl(api)
@@ -83,10 +95,7 @@ public class MainActivity extends AppCompatActivity {
 
                     ArrayList<Pokemon> pokemonList = pokeDex.getResults();
 
-                    for(int i = 0; i < pokemonList.size(); i++) {
-                        Pokemon p = pokemonList.get(i);
-                        Log.i(TAG, "Pokemon: " + p.getName());
-                    }
+                    pokemonAdapter.addPokemon(pokemonList);
                 } else {
                     Log.e(TAG, " onResponse: " + response.errorBody());
                 }
