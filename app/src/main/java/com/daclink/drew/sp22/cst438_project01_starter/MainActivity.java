@@ -44,16 +44,8 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        search = findViewById(R.id.search_btn);
-        searchbar = findViewById(R.id.search_bar)
-
-        binding.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        //search = findViewById(R.id.search_btn);
+        searchbar = findViewById(R.id.search_bar);
 
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
