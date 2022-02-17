@@ -8,7 +8,6 @@
         android:id="@+id/pokeImage"
         android:layout_width="96dp"
         android:layout_height="96dp"
-        android:background="@color/design_default_color_secondary"
         android:layout_gravity="center_horizontal"/>
     <TextView
         android:id="@+id/pokeName"

@@ -8,6 +8,7 @@ import com.daclink.drew.sp22.cst438_project01_starter.model.PokeDex;
 import com.daclink.drew.sp22.cst438_project01_starter.model.Pokemon;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
@@ -49,24 +50,53 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private PokemonAdapter pokemonAdapter;
 
+    private int offset;
+
+    private boolean change;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        pokemonAdapter = new PokemonAdapter();
+        pokemonAdapter = new PokemonAdapter(this);
         recyclerView.setAdapter(pokemonAdapter);
         recyclerView.setHasFixedSize(true);
         GridLayoutManager layoutManager = new GridLayoutManager(this, 3);
         recyclerView.setLayoutManager(layoutManager);
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                if(dy > 0) {
+                    int visibleItemCount = layoutManager.getChildCount();
+                    int totalItemCount = layoutManager.getItemCount();
+                    int pastVisibleItems = layoutManager.findFirstVisibleItemPosition();
+
+                    if(change) {
+                        if((visibleItemCount + pastVisibleItems) > totalItemCount) {
+                            Log.i(TAG, "The end.");
+
+                            change = false;
+                            offset += 20;
+                            getPokeData(offset);
+                        }
+                    }
+                }
+            }
+        });
 
         retrofit = new Retrofit.Builder()
                 .baseUrl(api)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        getPokeData();
+        change =true;
+        offset = 0;
+        getPokeData(offset);
 
 
 
@@ -83,13 +113,14 @@ public class MainActivity extends AppCompatActivity {
         searchbar = findViewById(R.id.search_bar);
     }
 
-    private void getPokeData() {
+    private void getPokeData( int offset) {
         PokeAPIService service = retrofit.create(PokeAPIService.class);
-        Call<PokeDex> pokeDexCall = service.getPokemonList();
+        Call<PokeDex> pokeDexCall = service.getPokemonList(20, offset);
 
         pokeDexCall.enqueue(new Callback<PokeDex>() {
             @Override
             public void onResponse(Call<PokeDex> call, Response<PokeDex> response) {
+                change = true;
                 if (response.isSuccessful()){
                     PokeDex pokeDex = response.body();
 
@@ -103,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<PokeDex> call, Throwable t) {
+                change = true;
                 Log.e(TAG, " onFailure: " + t.getMessage());
             }
         });

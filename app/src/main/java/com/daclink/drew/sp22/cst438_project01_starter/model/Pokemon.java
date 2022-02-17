@@ -2,6 +2,7 @@ package com.daclink.drew.sp22.cst438_project01_starter.model;
 
 public class Pokemon {
 
+    private int number;
     private String name;
     private String url;
 
@@ -19,5 +20,15 @@ public class Pokemon {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public int getNumber() {
+        String[] urlPart = url.split("/");
+
+        return Integer.parseInt(urlPart[urlPart.length-1]);
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
     }
 }

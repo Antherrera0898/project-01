@@ -1,5 +1,6 @@
 package com.daclink.drew.sp22.cst438_project01_starter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.daclink.drew.sp22.cst438_project01_starter.model.Pokemon;
 
 import java.util.ArrayList;
@@ -16,7 +19,10 @@ import java.util.ArrayList;
 public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.viewHolder>{
     private ArrayList<Pokemon> dataset;
 
-    public PokemonAdapter() {
+    private Context context;
+
+    public PokemonAdapter(Context context) {
+        this.context = context;
         dataset = new ArrayList<>();
     }
 
@@ -31,6 +37,12 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.viewHold
     public void onBindViewHolder(@NonNull viewHolder holder, int position) {
         Pokemon p = dataset.get(position);
         holder.pokeName.setText(p.getName());
+
+        Glide.with(context)
+                .load("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" + p.getNumber() + ".png")
+                .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(holder.pokeImage);
     }
 
     @Override
