@@ -3,10 +3,14 @@ package com.daclink.drew.sp22.cst438_project01_starter;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.daclink.drew.sp22.cst438_project01_starter.data.PokeAPIService;
+import com.daclink.drew.sp22.cst438_project01_starter.model.PokeDex;
+import com.daclink.drew.sp22.cst438_project01_starter.model.Pokemon;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.util.Log;
 import android.view.View;
 
 import androidx.navigation.NavController;
@@ -21,17 +25,36 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 
+import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = "PokeDex";
 
-    static final String api = "https://pokeapi.co/api/v2";
+
+    static final String api = "https://pokeapi.co/api/v2/";
     EditText searchbar;
     Button search, login, logout;
+
+    private Retrofit retrofit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        retrofit = new Retrofit.Builder()
+                .baseUrl(api)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        getPokeData();
 
 
 
@@ -46,9 +69,34 @@ public class MainActivity extends AppCompatActivity {
 
         //search = findViewById(R.id.search_btn);
         searchbar = findViewById(R.id.search_bar);
+    }
 
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
+    private void getPokeData() {
+        PokeAPIService service = retrofit.create(PokeAPIService.class);
+        Call<PokeDex> pokeDexCall = service.getPokemonList();
+
+        pokeDexCall.enqueue(new Callback<PokeDex>() {
+            @Override
+            public void onResponse(Call<PokeDex> call, Response<PokeDex> response) {
+                if (response.isSuccessful()){
+                    PokeDex pokeDex = response.body();
+
+                    ArrayList<Pokemon> pokemonList = pokeDex.getResults();
+
+                    for(int i = 0; i < pokemonList.size(); i++) {
+                        Pokemon p = pokemonList.get(i);
+                        Log.i(TAG, "Pokemon: " + p.getName());
+                    }
+                } else {
+                    Log.e(TAG, " onResponse: " + response.errorBody());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PokeDex> call, Throwable t) {
+                Log.e(TAG, " onFailure: " + t.getMessage());
+            }
+        });
     }
 
 //    @Override

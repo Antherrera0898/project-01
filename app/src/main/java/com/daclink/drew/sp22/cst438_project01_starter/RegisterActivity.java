@@ -50,6 +50,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 @Override
                                 public void run() {
                                     Toast.makeText(getApplicationContext(), "All signed up!", Toast.LENGTH_SHORT).show();
+                                    startActivity(new Intent(RegisterActivity.this, MainActivity.class));
                                 }
                             });
                         }
