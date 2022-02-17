@@ -6,6 +6,7 @@ import android.os.Bundle;
 import com.daclink.drew.sp22.cst438_project01_starter.data.PokeAPIService;
 import com.daclink.drew.sp22.cst438_project01_starter.model.PokeDex;
 import com.daclink.drew.sp22.cst438_project01_starter.model.Pokemon;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
@@ -58,6 +59,28 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNav);
+        bottomNavigationView.setSelectedItemId(R.id.search);
+
+        bottomNavigationView.setOnItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.profile:
+                        startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                        overridePendingTransition(0, 0);
+                        return true;
+                    case R.id.search:
+                        return true;
+                    case R.id.battle:
+                        startActivity(new Intent(getApplicationContext(), BattleActivity.class));
+                        overridePendingTransition(0, 0);
+                        return true;
+                }
+                return false;
+            }
+        });
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         pokemonAdapter = new PokemonAdapter(this);
