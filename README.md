@@ -1,4 +1,4 @@
-# project-01
+# CST 438 (Software Engineering) - Spring 2022 - Project I
 
 ## TEAM:
 Anthony Herrera:
