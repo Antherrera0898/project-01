@@ -16,7 +16,7 @@ import com.daclink.drew.sp22.cst438_project01_starter.model.User;
 
 public class LoginActivity extends AppCompatActivity {
     EditText username, password;
-    Button login;
+    Button login, register;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -27,6 +27,7 @@ public class LoginActivity extends AppCompatActivity {
         password = findViewById(R.id.password);
 
         login = findViewById(R.id.login);
+        register = findViewById(R.id.register);
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,6 +59,13 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     }).start();
                 }
+            }
+        });
+
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
             }
         });
     }
